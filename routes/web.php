@@ -46,7 +46,15 @@ Route::prefix('admin')->group(function(){
         return 'this is admin - author';
     });
 });
-
-// route lam viec voi con troller
-Route::get('/home/{age?}','HomeController@index')->middleware('age')->where('age','\d+');
+$par = 10;
+// route lam viec voi controller
+Route::get('/home/{age?}','HomeController@index')->where('age','\d+');
 Route::get('/abc','Test\TestController@test')->name('testabc');
+
+Route::get('/middle/{age?}', 'HomeController@middle')->name('middle')->where('age', '\d+');
+
+Route::resource('/service', 'Service\ServiceController', ['only' => [
+    'index', 'show', 'store', 'destroy'
+]]);
+Route::get('/view', 'HomeController@view')->name('view');
+Route::get('/product/index', 'HomeController@product')->name('product');
