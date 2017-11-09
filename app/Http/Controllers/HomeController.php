@@ -27,15 +27,40 @@ class HomeController extends Controller
         $data = [];
         $data['name'] = 'NTT';
         $data['age']  = 28;
-        $name = "PHP1705E";
+        $name = "<h1>PHP1705E</h1>";
         // truyen bien ra ngoai view - cach 1 (truyen nhieu bien 1 luc)
         //return view('home',$data);
-        
+
         // thong khi truyen 1 bien ra view
         return view('home.home')->with('myname', $name);
     }
 
     public function product(){
         return view('home.product');
+    }
+
+    public function login(Request $request){
+        // Request : la doi tuong nhan cac du lieu tu phia client gui len
+        $username = $request->input('txtUsername','ABC');
+        // $username = $_POST['txtUsername'];
+        $password = $request->input('txtPass','ESC');
+        // $password = $_POST['txtPass'];
+        //dd($username ."-". $password);
+        $data = $request->all();
+        // chuyen huong trang dua vao ten route
+        //return redirect()->route('product');
+        $age = $request->query(); // ~ $request->all();
+        $name = $request->query('name','ABC');
+        //$name = $_GET['name'];
+        //var_dump() + die;
+        dd($age);
+    }
+
+    public function ajax(Request $request){
+        $user = $request->input('username');
+        $pass = $request->input('password');
+        // response : tra ket qua ve cho client.
+        // joson ~ json_encode()
+        return response()->json($user);
     }
 }

@@ -58,3 +58,5 @@ Route::resource('/service', 'Service\ServiceController', ['only' => [
 ]]);
 Route::get('/view', 'HomeController@view')->name('view');
 Route::get('/product/index', 'HomeController@product')->name('product');
+Route::post('/login','HomeController@login')->name('login');
+Route::post('/ajax','HomeController@ajax')->name('ajax');
