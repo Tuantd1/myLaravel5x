@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CategoryTableSeeder extends Seeder
+class SizeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,15 +11,14 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        $count = 50;
+        $count = 10;
         for ($i=0; $i < $count; $i++) {
-            DB::table('category')->insert([
-                'name_cat' => 'Thoi Trang Thu dong ~ ' . $i,
-                'parent_id' => 0,
+            DB::table('size')->insert([
+                'name_size' => 'XL - ' . $i,
+                'des_size' => 'Test 123',
                 'status' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
         }
-
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Size As DB;
 class HomeController extends Controller
 {
     // su dung middleware trong controller
@@ -62,5 +62,10 @@ class HomeController extends Controller
         // response : tra ket qua ve cho client.
         // joson ~ json_encode()
         return response()->json($user);
+    }
+
+    public function testdb(){
+        $data = DB::find(1)->product()->get()->toArray();
+        dd($data);
     }
 }

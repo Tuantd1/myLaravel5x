@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return "Welcome";
 });
 
 Route::match(['get', 'post'], '/home', function () {
@@ -60,3 +61,7 @@ Route::get('/view', 'HomeController@view')->name('view');
 Route::get('/product/index', 'HomeController@product')->name('product');
 Route::post('/login','HomeController@login')->name('login');
 Route::post('/ajax','HomeController@ajax')->name('ajax');
+Route::get('/testdb','HomeController@testdb')->name('testdb');
+Route::get('/testabc',function(){
+    return App\Size::find(1)->product();
+});
