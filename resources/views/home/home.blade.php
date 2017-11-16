@@ -7,6 +7,7 @@
         <a href="{{route('product')}}">Products</a>
         <p>Name : {!! $myname !!}</p>
         <p>Name : {{ $myname }}</p>
+        {{ \ConvetStr::convertStrongToUppercase($myname); }}
 
         <form action="{{ route('login', ['name'=>'NTT','age'=>28]) }}" method="post">
             {{ csrf_field() }}

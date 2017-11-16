@@ -17,7 +17,7 @@ class ProuctTableSeeder extends Seeder
                 'name_pd' => 'Quan Jean - ' . $i,
                 'des_pd' => 'Test 123',
                 'id_cat' => 2,
-                'id_size' => 2,
+                'id_size' => 3,
                 'price_pd' => 200000,
                 'status' => 1,
                 'img_pd' => 'test-aosomi-.jpg',

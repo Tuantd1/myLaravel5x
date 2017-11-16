@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    //return view('welcome');
-    return "Welcome";
+    return view('welcome');
+    //return "Welcome";
 });
 
 Route::match(['get', 'post'], '/home', function () {
@@ -62,6 +62,13 @@ Route::get('/product/index', 'HomeController@product')->name('product');
 Route::post('/login','HomeController@login')->name('login');
 Route::post('/ajax','HomeController@ajax')->name('ajax');
 Route::get('/testdb','HomeController@testdb')->name('testdb');
+
 Route::get('/testabc',function(){
-    return App\Size::find(1)->product();
+    $data = App\Size::getDataByName('XL - 3');
+    //var_dump($data);
+    //$name = $data[0]->name_sizeew;
+    //return $name;
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

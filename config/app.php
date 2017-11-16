@@ -225,7 +225,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'CategoryModel' => App\Http\Models\CategoryModel::class,
+        'ConvetStr' => App\Helpers\CommonHelper::class,
     ],
 
 ];
