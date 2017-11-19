@@ -13,62 +13,45 @@
 
 Route::get('/', function () {
     return view('welcome');
-    //return "Welcome";
 });
-
-Route::match(['get', 'post'], '/home', function () {
-    return 'Hello word';
-});
-
-Route::match(['get', 'post'], '/api/test', function () {
-    return 'Hello word';
-});
-
-Route::any('/products', function () {
-    return 'this is product';
-});
-// \d ~ [0-9];
-// \w ~ [A-Za-z];
-// truyen tham so len route
-Route::get('/test/{id?}/{name?}',function($id = null, $name = null){
-    return "this is id : " . $id . ' --  This is name :' . $name;
-})->where(['id'=>'\d+', 'name'=>'\w+'])->name('abc');
-
-// gom nhom route va dat tien to cho route
-Route::prefix('admin')->group(function(){
-    Route::get('/',function(){
-        return 'this is admin';
-    });
-    Route::get('/dashboard',function(){
-        return 'this is admin - Dashborad';
-    });
-
-    Route::get('/author',function(){
-        return 'this is admin - author';
-    });
-});
-$par = 10;
-// route lam viec voi controller
-Route::get('/home/{age?}','HomeController@index')->where('age','\d+');
-Route::get('/abc','Test\TestController@test')->name('testabc');
-
-Route::get('/middle/{age?}', 'HomeController@middle')->name('middle')->where('age', '\d+');
 
 Route::resource('/service', 'Service\ServiceController', ['only' => [
     'index', 'show', 'store', 'destroy'
 ]]);
-Route::get('/view', 'HomeController@view')->name('view');
-Route::get('/product/index', 'HomeController@product')->name('product');
-Route::post('/login','HomeController@login')->name('login');
-Route::post('/ajax','HomeController@ajax')->name('ajax');
-Route::get('/testdb','HomeController@testdb')->name('testdb');
 
-Route::get('/testabc',function(){
-    $data = App\Size::getDataByName('XL - 3');
-    //var_dump($data);
-    //$name = $data[0]->name_sizeew;
-    //return $name;
-});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'admin'], function () {
+  Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
+  Route::post('/login', 'AdminAuth\LoginController@login');
+  Route::post('/logout', 'AdminAuth\LoginController@logout')->name('logout');
+
+  /*
+  Route::get('/register', 'AdminAuth\RegisterController@showRegistrationForm')->name('register');
+  Route::post('/register', 'AdminAuth\RegisterController@register');
+  */
+
+  Route::post('/password/email', 'AdminAuth\ForgotPasswordController@sendResetLinkEmail')->name('password.request');
+  Route::post('/password/reset', 'AdminAuth\ResetPasswordController@reset')->name('password.email');
+  Route::get('/password/reset', 'AdminAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+  Route::get('/password/reset/{token}', 'AdminAuth\ResetPasswordController@showResetForm');
+});
+
+
+Route::group([
+    'middleware' => ['web', 'admin', 'auth:admin'],
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'namespace' => 'Admin',
+], function ($router) {
+    // require base_path('routes/admin.php');
+
+    Route::get('/dashboard',function(){
+        return 'This admin dashboard';
+    });
+
+    Route::get('/product','ProductController@index');
+
+});
