@@ -46,12 +46,13 @@ Route::group([
     'as' => 'admin.',
     'namespace' => 'Admin',
 ], function ($router) {
-    // require base_path('routes/admin.php');
+    require base_path('routes/admin.php');
 
     Route::get('/dashboard',function(){
         return 'This admin dashboard';
     });
 
-    Route::get('/product','ProductController@index');
-
+    Route::get('/product','ProductController@index')->name('product');
+    Route::get('/product/add','ProductController@add')->name('addproduct');
+    Route::post('/product/handle','ProductController@handle')->name('handle');
 });

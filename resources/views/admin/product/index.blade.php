@@ -12,11 +12,10 @@
     <!-- /.col-lg-12 -->
 </div>
 <div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="white-box">
-            <div class="col-in row">
-                <h3> This is product</h3>
-            </div>
+            <h3 class="text-center"> This is list product !</h3>
+            <a class="btn btn-primary" href="{{ route('admin.addproduct') }}" title="Add product"> Add Product </a>
         </div>
     </div>
 </div>

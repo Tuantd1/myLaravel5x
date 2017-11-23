@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
-    <title>Pixel Admin - Responsive Admin Dashboard Template built with Twitter Bootstrap</title>
+    <title>Demo Laravel</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{url('admin/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Menu CSS -->
@@ -49,7 +52,7 @@
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li>
-                        <a class="profile-pic" href="#"> <img src="{{url('admin/plugins/images/users/varun.jpg')}}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">Steave</b> </a>
+                        <a class="profile-pic" href="#"> <img src="{{url('admin/plugins/images/users/varun.jpg')}}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">fdg </b> </a>
                     </li>
                 </ul>
             </div>
