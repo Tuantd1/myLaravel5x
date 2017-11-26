@@ -55,4 +55,7 @@ Route::group([
     Route::get('/product','ProductController@index')->name('product');
     Route::get('/product/add','ProductController@add')->name('addproduct');
     Route::post('/product/handle','ProductController@handle')->name('handle');
+    Route::get('/product/delete','ProductController@delete')->name('deleteproduct');
+    Route::get('/product/edit/{id?}','ProductController@edit')->name('editproduct');
+    Route::post('/product/hanldEdit','ProductController@hanldEdit')->name('hanldEdit');
 });

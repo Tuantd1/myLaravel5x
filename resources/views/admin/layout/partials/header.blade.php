@@ -9,8 +9,8 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
-    <title>Demo Laravel</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{  url('admin/plugins/images/favicon.png') }}">
+    <title>@yield('title')</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{url('admin/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Menu CSS -->
@@ -52,7 +52,7 @@
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li>
-                        <a class="profile-pic" href="#"> <img src="{{url('admin/plugins/images/users/varun.jpg')}}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">fdg </b> </a>
+                        <a class="profile-pic" href="#"> <img src="{{url('admin/plugins/images/users/varun.jpg')}}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"> {{ Session::get('username') }} </b> </a>
                     </li>
                 </ul>
             </div>

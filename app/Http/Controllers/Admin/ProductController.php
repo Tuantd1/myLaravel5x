@@ -24,15 +24,22 @@ class ProductController extends Controller
         }
         $request->session()->put('username', $data['name']);
         $request->session()->put('email', $data['email']);
+        //Session::put('username', $data['name']);
+        //Session::put('email', $data['email']);
+        $data['messAction'] = $request->session()->get('delete_mess');
+
+        $data['title']  = "This is list product";
+
+        $data['product'] = DB::table('product')->paginate(4);
 
         return view('admin.product.index',$data);
     }
 
     public function add(Request $request){
-        //$mySession = $request->session()->get('username');
         $dat = [];
         $data['cat']  = DB::table('category')->get()->toArray();
         $data['size'] = DB::table('size')->get()->toArray();
+        $data['title'] = "this is add product";
         return view('admin.product.add',$data);
     }
 
@@ -55,7 +62,7 @@ class ProductController extends Controller
     public function handle(StoreProductsPost $request){
 
         // kim tra xem nguoi dung chon file hay chua
-        $photo = null;
+        $photo    = null;
         $fileName = null;
 
         if($request->hasFile('photo'))
@@ -63,22 +70,27 @@ class ProductController extends Controller
             $photo    = $request->file('photo');
             $fileName = $this->_myUploads($photo);
         }
-
-        /*
-        $validator = Validator::make($request->all(), [
-            'photo' => 'required'
-        ]);
+        $validator = Validator::make(
+            ['photo' => $fileName],
+            [
+                'photo' => 'required'
+            ],
+            [
+                'photo.required' => 'Vui long chon anh',
+                //'photo.image' => 'file up load phai la anh',
+                //'photo.mimes' => 'chi chap nhap dinh dang : jpeg,png,jpg,gif'
+            ]
+        );
 
         if ($validator->fails()) {
-            return redirect('admin/product/add')
+            return redirect()->route('admin.addproduct')
                         ->withErrors($validator)
                         ->withInput();
         }
-        */
-        // thanh cong - chay qua lenh validate()
+
+        //  thanh cong - chay qua lenh validate()
         //  loi thi no khong chay xuong dung ngay o ham validate
-        //
-        // tat ca cac buoc deu hop le ve du lieu - bat luu vao database
+        //  tat ca cac buoc deu hop le ve du lieu - bat luu vao database
         $data = [];
         $data['name_pd'] = $request->input('nameproduct');
         $data['des_pd']  = $request->input('desproduct');
@@ -95,6 +107,77 @@ class ProductController extends Controller
             return redirect()->route('admin.product');
         }else{
             return redirect()->route('admin.addproduct',['state'=>'fail']);
+        }
+    }
+
+    public function delete(Request $request){
+        $id = $request->input('id');
+        $id = is_numeric($id) ? $id : 0;
+        $delete = DB::table('product')->where('id',$id)->delete();
+        if($delete){
+            $request->session()->flash('delete_mess', 'Delete Success');
+            return redirect()->route('admin.product');
+        }else{
+            $request->session()->flash('delete_mess', 'Delete Fail');
+            return redirect()->route('admin.product',['state'=>'fail']);
+        }
+    }
+
+    public function edit($id = null, Request $request){
+        $id = is_numeric($id) ? $id : 0;
+        $data = [];
+        $data['info']  = DB::table('product')->where('id',$id)->get()->first();
+        $data['title'] = "This is edit product";
+
+        if(empty($data['info'])){
+            return 'Not found Data';
+        }else{
+            $data['cat']  = DB::table('category')->get();
+            $data['size'] = DB::table('size')->get();
+            return view('admin.product.edit',$data);
+        }
+    }
+
+    public function hanldEdit(Request $request){
+        // coi nhu du lieu hop le - bo qua validate data
+
+        $photo    = null;
+        $fileName = null;
+        if($request->hasFile('photo')){
+            $photo    = $request->file('photo');
+            $fileName = $this->_myUploads($photo);
+        }
+
+        $avatar = ($fileName == null OR $fileName == '') ? ($request->input('hddImage')) : $fileName;
+        $namePd = $request->input('nameproduct');
+        $desPd  = $request->input('desproduct');
+        $cat    = $request->input('chooseCat');
+        $size   = $request->input('chooseSize');
+        $price  = $request->input('priceproduct');
+        $qty    = $request->input('qtyproduct');
+        $status = $request->input('chooseStatus');
+
+        $data = array(
+            'name_pd' => $namePd,
+            'des_pd' => $desPd,
+            'id_cat' => $cat,
+            'id_size' => $size,
+            'price_pd' => $price,
+            'status' => $status,
+            'img_pd' => $avatar,
+            'qty_pd' => $qty,
+            'updated_at' => date('Y-m-d H:i:s')
+        );
+        $id = $request->input('hddIdProduct');
+        $id = is_numeric($id) ? $id : 0;
+
+        $update = DB::table('product')->where('id',$id)->update($data);
+        if($update){
+            $request->session()->flash('delete_mess', 'Edit Success');
+            return redirect()->route('admin.product');
+        }else{
+            $request->session()->flash('delete_mess', 'Edit Fail');
+            return redirect('/admin/product/edit/'.$id);
         }
     }
 }
