@@ -23,6 +23,17 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// service API
+Route::group([
+    'namespace'=>'API'
+], function(){
+    // lam viec voi action index/show - method : GET
+    Route::resource('/service','ServiceController', ['only' => [
+        'index', 'show'
+    ]]);
+});
+// end service API
+
 Route::group(['prefix' => 'admin'], function () {
   Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
   Route::post('/login', 'AdminAuth\LoginController@login');
@@ -46,7 +57,7 @@ Route::group([
     'as' => 'admin.',
     'namespace' => 'Admin',
 ], function ($router) {
-    require base_path('routes/admin.php');
+    //require base_path('routes/admin.php');
 
     Route::get('/dashboard',function(){
         return 'This admin dashboard';
@@ -59,3 +70,7 @@ Route::group([
     Route::get('/product/edit/{id?}','ProductController@edit')->name('editproduct');
     Route::post('/product/hanldEdit','ProductController@hanldEdit')->name('hanldEdit');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

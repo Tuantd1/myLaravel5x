@@ -64,28 +64,33 @@ class ProductController extends Controller
         // kim tra xem nguoi dung chon file hay chua
         $photo    = null;
         $fileName = null;
+        $file     = null;
 
         if($request->hasFile('photo'))
         {
-            $photo    = $request->file('photo');
-            $fileName = $this->_myUploads($photo);
+            $photo      = $request->file('photo');
+            $dataUpload = $request->only('photo');
+            $file       = $dataUpload['photo'];
         }
         $validator = Validator::make(
-            ['photo' => $fileName],
-            [
-                'photo' => 'required'
-            ],
+            ['photo' => $file],
+            ['photo' => 'required|image|mimes:jepg,png,gif|max:10000'],
             [
                 'photo.required' => 'Vui long chon anh',
-                //'photo.image' => 'file up load phai la anh',
-                //'photo.mimes' => 'chi chap nhap dinh dang : jpeg,png,jpg,gif'
+                'photo.image' => 'file up load phai la anh',
+                'photo.mimes' => 'chi chap nhap dinh dang : jpeg, png, gif',
+                'photo.max' => 'dung luong file khong lon hon :max kb',
             ]
         );
 
-        if ($validator->fails()) {
-            return redirect()->route('admin.addproduct')
-                        ->withErrors($validator)
-                        ->withInput();
+        if ($validator->fails())
+        {
+            return redirect()->route('admin.addproduct')->withErrors($validator)->withInput();
+        }
+        else
+        {
+            // moi cho upload file anh
+            $fileName = $this->_myUploads($photo);
         }
 
         //  thanh cong - chay qua lenh validate()
